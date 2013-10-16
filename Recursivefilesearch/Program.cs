@@ -44,9 +44,9 @@ namespace Recursivefilesearch
 
         static void WalkDirectoryTree(System.IO.DirectoryInfo root)
         {
-            System.IO.FileInfo[] files = null;
-            System.IO.DirectoryInfo[] subDirs = null;
-            System.IO.StreamWriter filex = new System.IO.StreamWriter("test.txt", true);
+            FileInfo[] files = null;
+            DirectoryInfo[] subDirs = null;
+            StreamWriter filex = new System.IO.StreamWriter("test.txt", true);
 
 
 
@@ -93,8 +93,8 @@ namespace Recursivefilesearch
 
             if (files != null)
             {
-                filex = new System.IO.StreamWriter("test.txt", true);
-                foreach (System.IO.FileInfo fi in files)
+                filex = new StreamWriter("test.txt", true);
+                foreach (FileInfo fi in files)
                 {
                     // In this example, we only access the existing FileInfo object. If we 
                     // want to open, delete or modify the file, then 
@@ -108,14 +108,14 @@ namespace Recursivefilesearch
 
             if (subDirs != null)
             {
-                foreach (System.IO.DirectoryInfo subds in subDirs)
+                foreach (DirectoryInfo subds in subDirs)
                 {
-                    filex = new System.IO.StreamWriter("test.txt", true);
+                    filex = new StreamWriter("test.txt", true);
                     Console.WriteLine(subds.FullName);
                     filex.WriteLine(subds.FullName);
                     filex.Close();
 
-                    foreach (System.IO.DirectoryInfo dirInfo in subDirs)
+                    foreach (DirectoryInfo dirInfo in subDirs)
                     {
                         // Resursive call for each subdirectory.
                         WalkDirectoryTree(dirInfo);
