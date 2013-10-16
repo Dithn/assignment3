@@ -8,8 +8,8 @@ namespace Recursivefilesearch
 {
     class Program
     {
-        static System.IO.StreamWriter filex = new System.IO.StreamWriter("test.txt", true);
         static System.Collections.Specialized.StringCollection log = new System.Collections.Specialized.StringCollection();
+        static System.IO.StreamWriter filex = new System.IO.StreamWriter("test.txt", true);
 
         //list your excluded dirs
         private static List<string> _excludedDirectories = new List<string>() { "Windows", "AppData", "$WINDOWS.~BT", "MSOCache", "ProgramData", "Config.Msi", "$Recycle.Bin", "Recovery", "System Volume Information", "Documents and Settings", "Perflogs" };
