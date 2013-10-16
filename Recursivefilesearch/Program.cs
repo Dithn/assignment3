@@ -8,30 +8,14 @@ namespace Recursivefilesearch
 {
     class Program
     {
+        static System.IO.StreamWriter filex = new System.IO.StreamWriter("test.txt", true);
+        static System.Collections.Specialized.StringCollection log = new System.Collections.Specialized.StringCollection();
+
         //list your excluded dirs
         private static List<string> _excludedDirectories = new List<string>() { "Windows", "AppData", "$WINDOWS.~BT", "MSOCache", "ProgramData", "Config.Msi", "$Recycle.Bin", "Recovery", "System Volume Information", "Documents and Settings", "Perflogs" };
 
-        static System.IO.StreamWriter filex = new System.IO.StreamWriter("test.txt", true);
-
-        //method to check
-        static bool isExcluded(List<string> exludedDirList, string target)
-        {
-            return exludedDirList.Any(d => new DirectoryInfo(target).Name.Equals(d));
-        }
-
-        static System.Collections.Specialized.StringCollection log = new System.Collections.Specialized.StringCollection();
-        
-
         static void Main(string[] args)
         {
-            // Specify the starting folder on the command line, or in  
-            // Visual Studio in the Project > Properties > Debug pane.
-
-            /*TraverseTree(args[0]);
-
-            Console.WriteLine("Press any key");
-            Console.ReadKey();*/
-
             DriveInfo di = new System.IO.DriveInfo("C:\\");
 
             // Here we skip the drive if it is not ready to be read. This 
@@ -131,6 +115,10 @@ namespace Recursivefilesearch
             }
         }
 
-        
+        //method to check
+        static bool isExcluded(List<string> exludedDirList, string target)
+        {
+            return exludedDirList.Any(d => new DirectoryInfo(target).Name.Equals(d));
+        }
     }
 }
