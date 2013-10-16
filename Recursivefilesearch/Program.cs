@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 
 namespace Recursivefilesearch
 {
@@ -15,17 +16,19 @@ namespace Recursivefilesearch
 
             foreach (string dr in drives)
             {
-                System.IO.DriveInfo di = new System.IO.DriveInfo(dr);
+                DriveInfo di = new System.IO.DriveInfo(dr);
 
-                // Here we skip the drive if it is not ready to be read. This 
-                // is not necessarily the appropriate action in all scenarios. 
-                if (!di.IsReady)
+                // Here we skip the drive if it is not ready to be read. 
+                if (di.IsReady)
+                {
+                    DirectoryInfo rootDir = di.RootDirectory;
+                    WalkDirectoryTree(rootDir);
+                }
+                else
                 {
                     Console.WriteLine("The drive {0} could not be read", di.Name);
                     continue;
                 }
-                System.IO.DirectoryInfo rootDir = di.RootDirectory;
-                WalkDirectoryTree(rootDir);
             }
 
             // Write out all the files that could not be processed.
@@ -44,6 +47,8 @@ namespace Recursivefilesearch
             System.IO.FileInfo[] files = null;
             System.IO.DirectoryInfo[] subDirs = null;
             System.IO.StreamWriter filex = new System.IO.StreamWriter("test.txt", true);
+
+
 
             if (filex != null)
             {
