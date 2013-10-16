@@ -8,7 +8,6 @@ namespace Recursivefilesearch
     class Program
     {
         static System.Collections.Specialized.StringCollection log = new System.Collections.Specialized.StringCollection();
-        static System.IO.StreamWriter filex = new System.IO.StreamWriter("test.txt", true);
 
         static void Main()
         {
@@ -44,29 +43,52 @@ namespace Recursivefilesearch
         {
             System.IO.FileInfo[] files = null;
             System.IO.DirectoryInfo[] subDirs = null;
+            System.IO.StreamWriter filex = new System.IO.StreamWriter("test.txt", true);
 
-            // First, process all the files directly under this folder 
+            if (filex != null)
+            {
+                filex.Close();
+            }
+
+            // Process all the folders directly under the root 
+            try
+            {
+                subDirs = root.GetDirectories();
+            }// This is thrown if even one of the folders requires permissions greater than the application provides. 
+            catch (UnauthorizedAccessException e)
+            {
+                log.Add(e.Message);
+            }
+            catch (System.IO.DirectoryNotFoundException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
+            // Process all the files directly under the root 
             try
             {
                 files = root.GetFiles("*.*");
-            }
-            // This is thrown if even one of the files requires permissions greater 
-            // than the application provides. 
+            }// This is thrown if even one of the files requires permissions greater than the application provides. 
             catch (UnauthorizedAccessException e)
             {
-                // This code just writes out the message and continues to recurse. 
-                // You may decide to do something different here. For example, you 
-                // can try to elevate your privileges and access the file again.
                 log.Add(e.Message);
             }
-
             catch (System.IO.DirectoryNotFoundException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            catch(Exception e)
             {
                 Console.WriteLine(e.Message);
             }
 
             if (files != null)
             {
+                filex = new System.IO.StreamWriter("test.txt", true);
                 foreach (System.IO.FileInfo fi in files)
                 {
                     // In this example, we only access the existing FileInfo object. If we 
@@ -76,15 +98,25 @@ namespace Recursivefilesearch
                     Console.WriteLine(fi.FullName);
                     filex.WriteLine(fi.FullName);
                 }
+                filex.Close();
+            }
 
-                // Now find all the subdirectories under this directory.
-                subDirs = root.GetDirectories();
-
-                foreach (System.IO.DirectoryInfo dirInfo in subDirs)
+            if (subDirs != null)
+            {
+                foreach (System.IO.DirectoryInfo subds in subDirs)
                 {
-                    // Resursive call for each subdirectory.
-                    WalkDirectoryTree(dirInfo);
+                    filex = new System.IO.StreamWriter("test.txt", true);
+                    Console.WriteLine(subds.FullName);
+                    filex.WriteLine(subds.FullName);
+                    filex.Close();
+
+                    foreach (System.IO.DirectoryInfo dirInfo in subDirs)
+                    {
+                        // Resursive call for each subdirectory.
+                        WalkDirectoryTree(dirInfo);
+                    }
                 }
+                filex.Close();// Because at end filestream needs to close
             }
         }
     }
