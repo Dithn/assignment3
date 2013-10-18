@@ -115,14 +115,14 @@ namespace Recursivefilesearch
             if (subDirs != null)
             {
                 //var filteredDirs = Directory.GetDirectories(root.Name).Where(d => !isExcluded(_excludedDirectories, d));
-                foreach (DirectoryInfo subds in subDirs)
+                foreach (DirectoryInfo subds in subDirs.Where(d => !isExcluded(_excludedDirectories, d.Name)))
                 {
                     filex = new StreamWriter("test.txt", true);
                     Console.WriteLine(subds.FullName);
                     filex.WriteLine(subds.FullName);
                     filex.Close();
 
-                    foreach (DirectoryInfo dirInfo in subDirs)
+                    foreach (DirectoryInfo dirInfo in subDirs.Where(d => !isExcluded(_excludedDirectories, d.Name)))
                     {
                         // Resursive call for each subdirectory.
                         WalkDirectoryTree(dirInfo);
