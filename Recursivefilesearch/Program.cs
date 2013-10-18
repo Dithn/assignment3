@@ -9,9 +9,17 @@ namespace Recursivefilesearch
     class Program
     {
         static System.Collections.Specialized.StringCollection log = new System.Collections.Specialized.StringCollection();
+        private static List<string> _excludedDirectories = new List<string>() { "Windows", "AppData", "$WINDOWS.~BT", "MSOCache", "ProgramData", "Config.Msi", "$Recycle.Bin", "Recovery", "System Volume Information", "Documents and Settings", "Perflogs" };
+
+        //method to check
+        static bool isExcluded(List<string> exludedDirList, string target)
+        {
+            return exludedDirList.Any(d => new DirectoryInfo(target).Name.Equals(d));
+        }
 
         static void Main()
         {
+            
             string[] drives = {"C:\\"};
 
             foreach (string dr in drives)
@@ -47,8 +55,6 @@ namespace Recursivefilesearch
             FileInfo[] files = null;
             DirectoryInfo[] subDirs = null;
             StreamWriter filex = new System.IO.StreamWriter("test.txt", true);
-
-
 
             if (filex != null)
             {
@@ -108,6 +114,7 @@ namespace Recursivefilesearch
 
             if (subDirs != null)
             {
+                //var filteredDirs = Directory.GetDirectories(root.Name).Where(d => !isExcluded(_excludedDirectories, d));
                 foreach (DirectoryInfo subds in subDirs)
                 {
                     filex = new StreamWriter("test.txt", true);
