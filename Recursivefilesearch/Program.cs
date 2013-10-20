@@ -9,22 +9,24 @@ namespace Recursivefilesearch
     class Program
     {
         static System.Collections.Specialized.StringCollection log = new System.Collections.Specialized.StringCollection();
-        private static List<string> _excludedDirectories = new List<string>() { "Windows", "AppData", "$WINDOWS.~BT", "MSOCache", "ProgramData", "Config.Msi", "$Recycle.Bin", "Recovery", "System Volume Information", "Documents and Settings", "Perflogs" };
 
         public string strPath = "Data Source = AP0C-PC\\VARSITY; Initial Catalog = DirIndexer; Integrated Security = SSPI";
 
-        //method to check
-        static bool isExcluded(List<string> exludedDirList, string target)
-        {
-            return exludedDirList.Any(d => new DirectoryInfo(target).Name.Equals(d));
-        }
-
         static void Main()
         {
-            string filePath = Environment.ExpandEnvironmentVariables(@"%USERPROFILE%\documents");
-            Console.WriteLine(filePath);
-            DirectoryInfo rootDir = new DirectoryInfo(filePath);
-            WalkDirectoryTree(rootDir);
+            string[] foldersToBeIndexed = {"desktop", "downloads", "documents", "music", "pictures", "videos"};
+
+            foreach (string root in foldersToBeIndexed)
+            {
+                string filePath = Environment.ExpandEnvironmentVariables(@"%USERPROFILE%\" + root);
+                Console.WriteLine(filePath);
+
+                //DirectoryInfo rootDir = new DirectoryInfo(filePath);
+                //WalkDirectoryTree(rootDir);
+            }
+
+
+            
 
             // Write out all the files that could not be processed.
             Console.WriteLine("Files with restricted access:");
